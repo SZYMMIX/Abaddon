@@ -6,10 +6,15 @@ from map import *
 class Game:
     def __init__(self):
         pygame.init()
+
+        pygame.mouse.set_visible(False) 
+        pygame.event.set_grab(True)
+        
         self.display = pygame.display.set_mode(RES)
         self.clock = pygame.time.Clock()
         self.running = True
         self.new_game()
+
 
     def new_game(self):
         self.map = Map(self)
