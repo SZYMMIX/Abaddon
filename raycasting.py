@@ -14,7 +14,7 @@ class RayCasting:
         ray_angle = self.game.player.angle - HALF_FOV
         
 
-        for _ in range(NUM_RAYS):
+        for ray in range(NUM_RAYS):
 
             sin_a = math.sin(ray_angle)
             cos_a = math.cos(ray_angle)
@@ -25,13 +25,17 @@ class RayCasting:
                 y += 0.01 * sin_a
 
                 if (int(x), int(y)) in self.game.map.world_map:
-                    pygame.draw.line(self.game.display, 'red', (ox * 100, oy * 100),
-                                    (x * 100, y * 100), 2)
-                    
-                    pygame.draw.circle(self.game.display, 'green', (x * 100, y * 100), 5)
-                    
+                    dist = depth * 0.01
+                    dist *= math.cos(self.game.player.angle - ray_angle)
+                    proj_height = SCREEN_DIST / (dist + 0.0001)
+
+                    c = 255 / (1 + dist * 0.4) 
+                    c = int(c)
+                    color = (c, c, c)
+
+                    pygame.draw.rect(self.game.display, color,
+                                    (ray * SCALE, HEIGHT // 2 - proj_height // 2, 
+                                     SCALE, proj_height))
+
                     break 
             ray_angle += DELTA_ANGLE
-
-        pygame.draw.line(self.game.display, 'red', (ox * 100, oy * 100),
-                        (x * 100, y * 100), 2)
