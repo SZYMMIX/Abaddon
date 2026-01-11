@@ -6,6 +6,10 @@ class RayCasting:
     def __init__(self, game):
         self.game = game
 
+        self.textures = {
+            1: pygame.image.load(join('assets', 'walls', '1.png')).convert_alpha()
+        }
+
     def update(self):
         self.ray_cast()
 
@@ -53,24 +57,25 @@ class RayCasting:
                 depth_vert += delta_depth
                 
             if depth_vert < depth_hor:
-                depth = depth_vert
-                color_modifier = 0.8 
+                depth, texture = depth_vert, texture_vert
+                y_vert %= 1
+                offset = y_vert if cos_a > 0 else (1 - y_vert)
             else:
-                depth = depth_hor
-                color_modifier = 1.0
+                depth, texture = depth_hor, texture_hor
+                x_hor %= 1
+                offset = (1 - x_hor) if sin_a > 0 else x_hor
 
             depth *= math.cos(self.game.player.angle - ray_angle)
 
             proj_height = SCREEN_DIST / (depth + 0.0001)
 
-            c = 255 / (1 + depth * 0.5)
-            c *= color_modifier 
+            wall_column = self.textures[texture].subsurface(
+                offset * (TEXTURE_SIZE - SCALE), 0, SCALE, TEXTURE_SIZE
+            )
             
-            c = int(max(0, min(255, c)))
-            color = (c, c, c)
-
-            pygame.draw.rect(self.game.display, color,
-                            (ray * SCALE, HEIGHT // 2 - proj_height // 2, 
-                             SCALE, proj_height))
+            wall_column = pygame.transform.scale(wall_column, (SCALE, int(proj_height)))
+            
+            self.game.display.blit(wall_column, 
+                                   (ray * SCALE, HEIGHT // 2 - proj_height // 2))
 
             ray_angle += DELTA_ANGLE

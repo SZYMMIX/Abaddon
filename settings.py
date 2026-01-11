@@ -1,8 +1,11 @@
 import math
+from os.path import join 
 import pygame
 
 RES = WIDTH, HEIGHT = 1600, 900
 FPS = 60
+TEXTURE_SIZE = 256
+HALF_TEXTURE_SIZE = TEXTURE_SIZE // 2
 
 PLAYER_POS = 1.5, 5
 PLAYER_ANGLE = 0
