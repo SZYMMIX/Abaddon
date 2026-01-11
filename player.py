@@ -39,9 +39,22 @@ class Player:
             dx += -speed * sin_a
             dy += cos_a * speed
         
-        self.x += dx
-        self.y += dy
+        if dx != 0:
+            ox = (dx / abs(dx)) * PLAYER_SIZE
+            if self.check_wall(int(self.x + dx + ox), int(self.y - PLAYER_SIZE)) and \
+               self.check_wall(int(self.x + dx + ox), int(self.y + PLAYER_SIZE)):
+                self.x += dx
+
+        if dy != 0:
+            oy = (dy / abs(dy)) * PLAYER_SIZE
+            if self.check_wall(int(self.x - PLAYER_SIZE), int(self.y + dy + oy)) and \
+               self.check_wall(int(self.x + PLAYER_SIZE), int(self.y + dy + oy)):
+                self.y += dy
+
         self.angle %= math.tau
+
+    def check_wall(self, x, y):
+        return (x, y) not in self.game.map.world_map
 
     def draw(self):
         pygame.draw.circle(self.game.display, 'green', (self.x * 100, self.y * 100), 15)
