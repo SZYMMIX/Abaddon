@@ -4,6 +4,7 @@ from settings import *
 from map import *
 from player import *
 from raycasting import *
+from weapon import *
 
 class Game:
     def __init__(self):
@@ -22,16 +23,20 @@ class Game:
         self.map = Map(self)
         self.player = Player(self)
         self.raycasting = RayCasting(self)
+        self.weapon = Weapon(self)
 
     def update(self):
         self.player.update()
-        self.raycasting.update()
-        pygame.display.flip()
+        self.weapon.update()
         self.clock.tick(FPS)
         pygame.display.set_caption(f'{self.clock.get_fps() :.1f}')
 
     def draw(self):
-        self.display.fill('black')
+        pygame.draw.rect(self.display, CEILING_COLOR, (0, 0, WIDTH, HEIGHT // 2))
+        pygame.draw.rect(self.display, FLOOR_COLOR, (0, HEIGHT // 2, WIDTH, HEIGHT // 2))
+        self.raycasting.update()
+        self.weapon.draw()
+        pygame.display.flip()
         # self.map.draw()
         # self.player.draw()
 
