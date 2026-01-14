@@ -32,7 +32,6 @@ class Game:
     def update(self):
         self.player.update()
         self.weapon.update()
-        self.object_handler.update()
         self.clock.tick(FPS)
         pygame.display.set_caption(f'{self.clock.get_fps() :.1f}')
 
@@ -40,6 +39,7 @@ class Game:
         pygame.draw.rect(self.display, CEILING_COLOR, (0, 0, WIDTH, HEIGHT // 2))
         pygame.draw.rect(self.display, FLOOR_COLOR, (0, HEIGHT // 2, WIDTH, HEIGHT // 2))
         self.raycasting.update()
+        self.object_handler.update()
         self.object_renderer.draw()
         self.weapon.draw()
         pygame.display.flip()

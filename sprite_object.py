@@ -19,8 +19,6 @@ class SpriteObject:
         self.sprite_half_width = 0
 
     def get_sprite_projection(self):
-        # proj = self.game.raycasting.proj_height
-
         dx = self.x - self.game.player.x
         dy = self.y - self.game.player.y
         self.dx, self.dy = dx, dy
@@ -39,6 +37,14 @@ class SpriteObject:
         self.norm_dist = self.dist * math.cos(delta)
         
         if -self.IMAGE_HALF_WIDTH < self.screen_x < (WIDTH + self.IMAGE_HALF_WIDTH) and self.norm_dist > 0.5:
+            ray_idx = int(self.screen_x // SCALE)
+            
+            if 0 <= ray_idx < NUM_RAYS:
+                wall_dist = self.game.raycasting.depth_buffer_list[ray_idx]
+                
+                if self.norm_dist > wall_dist:
+                    return 
+                
             self.get_sprite()
 
     def get_sprite(self):

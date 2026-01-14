@@ -9,6 +9,7 @@ class RayCasting:
         self.textures = {
             1: pygame.image.load(join('assets', 'walls', '1.png')).convert_alpha()
         }
+        self.depth_buffer_list = []
 
     def update(self):
         self.ray_cast()
@@ -18,7 +19,8 @@ class RayCasting:
         map_x, map_y = int(ox), int(oy)
 
         ray_angle = self.game.player.angle - HALF_FOV
-        
+        self.depth_buffer_list = []
+
         for ray in range(NUM_RAYS):
 
             sin_a = math.sin(ray_angle)
@@ -78,4 +80,5 @@ class RayCasting:
             self.game.display.blit(wall_column, 
                                    (ray * SCALE, HEIGHT // 2 - proj_height // 2))
 
+            self.depth_buffer_list.append(depth)
             ray_angle += DELTA_ANGLE
