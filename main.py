@@ -5,6 +5,8 @@ from map import *
 from player import *
 from raycasting import *
 from weapon import *
+from object_handler import *
+from object_renderer import *
 
 class Game:
     def __init__(self):
@@ -24,10 +26,13 @@ class Game:
         self.player = Player(self)
         self.raycasting = RayCasting(self)
         self.weapon = Weapon(self)
+        self.object_renderer = ObjectRenderer(self)
+        self.object_handler = ObjectHandler(self)
 
     def update(self):
         self.player.update()
         self.weapon.update()
+        self.object_handler.update()
         self.clock.tick(FPS)
         pygame.display.set_caption(f'{self.clock.get_fps() :.1f}')
 
@@ -35,10 +40,9 @@ class Game:
         pygame.draw.rect(self.display, CEILING_COLOR, (0, 0, WIDTH, HEIGHT // 2))
         pygame.draw.rect(self.display, FLOOR_COLOR, (0, HEIGHT // 2, WIDTH, HEIGHT // 2))
         self.raycasting.update()
+        self.object_renderer.draw()
         self.weapon.draw()
         pygame.display.flip()
-        # self.map.draw()
-        # self.player.draw()
 
     def check_events(self):
         for event in pygame.event.get():
