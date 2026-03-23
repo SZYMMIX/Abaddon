@@ -7,6 +7,9 @@ class SpriteObject:
         self.game = game
         self.x, self.y = pos
         self.image = pygame.image.load(path).convert_alpha()
+        self.health = 100
+        self.is_dead = False
+        self.hitbox_radius = 50
 
         self.IMAGE_WIDTH = self.image.get_width()
         self.IMAGE_HALF_WIDTH = self.IMAGE_WIDTH // 2
@@ -64,4 +67,5 @@ class SpriteObject:
 
 
     def update(self):
-        self.get_sprite_projection()
+        if not self.is_dead:
+            self.get_sprite_projection()

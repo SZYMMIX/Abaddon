@@ -5,6 +5,7 @@ class Weapon:
     def __init__(self, game):
         self.game = game
         self.images = []
+        self.range = 7
         
         NUM_FRAMES = 15 
         SCALE_FACTOR = 0.43 
@@ -49,6 +50,23 @@ class Weapon:
             self.shooting = True
             self.frame_index = 1 
             self.frame_timer = 0
+            
+            for object in self.game.object_handler.sprite_list:
+                
+                if not object.is_dead:
+                    if object.screen_x - object.sprite_half_width < HALF_WIDTH < object.screen_x + object.sprite_half_width:
+                        ray_idx = NUM_RAYS // 2
+                        
+                        if self.game.raycasting.depth_buffer_list:
+                            wall_dist = self.game.raycasting.depth_buffer_list[ray_idx]
+                            
+                            if object.norm_dist < wall_dist and object.norm_dist < self.range:
+                                object.health -= 50
+                                
+                                if object.health <= 0:
+                                    object.is_dead = True
+                                
+                                break
 
     def update(self):
         keys = pygame.key.get_pressed()
