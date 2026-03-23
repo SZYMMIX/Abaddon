@@ -3,7 +3,7 @@
 A custom-built pseudo-3D game engine written from scratch in **Python** using **Pygame**. 
 This project is an educational deep dive into the classic rendering techniques used in early 90s first-person shooters like *Wolfenstein 3D* and *Doom*.
 
-![Gameplay Screenshot](assets\docs\gameplay_screenshot.png)
+![Gameplay Screenshot](assets/docs/gameplay_screenshot.png)
 
 ## 🚀 Current Features
 
