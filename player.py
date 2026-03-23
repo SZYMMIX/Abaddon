@@ -10,7 +10,6 @@ class Player:
         dt = self.game.clock.get_time()
         sin_a = math.sin(self.angle)
         cos_a = math.cos(self.angle)
-        dx, dy = 0, 0
         speed = PLAYER_SPEED * dt
         rot_speed = PLAYER_ROT_SPEED * dt
 
@@ -26,18 +25,21 @@ class Player:
         if keys[pygame.K_RIGHT]:
             self.angle += rot_speed
 
-        if keys[pygame.K_w]:
-            dx += speed * cos_a
-            dy += speed * sin_a
-        if keys[pygame.K_s]:
-            dx += -speed * cos_a
-            dy += -speed * sin_a
-        if keys[pygame.K_a]:
-            dx += speed * sin_a
-            dy += -cos_a * speed
-        if keys[pygame.K_d]:
-            dx += -speed * sin_a
-            dy += cos_a * speed
+        vx, vy = 0, 0
+        
+        if keys[pygame.K_w]: vx += 1
+        if keys[pygame.K_s]: vx -= 1
+        if keys[pygame.K_a]: vy -= 1
+        if keys[pygame.K_d]: vy += 1
+        
+        length = math.hypot(vx, vy)
+        
+        if length > 0:
+            vx /= length
+            vy /= length
+        
+        dx = (vx * cos_a - vy * sin_a) * speed
+        dy = (vx * sin_a + vy * cos_a) * speed
         
         if dx != 0:
             ox = (dx / abs(dx)) * PLAYER_SIZE
